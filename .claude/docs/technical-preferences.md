@@ -56,7 +56,6 @@
 
 ## Architecture Decisions Log
 
-<!-- Quick reference linking to full ADRs in docs/architecture/ -->
 - [No ADRs yet — use /architecture-decision to create one]
 
 ## Engine Specialists
@@ -73,9 +72,6 @@
 - **Routing Notes**: [TO BE CONFIGURED]
 
 ### File Extension Routing
-
-<!-- Skills use this table to select the right specialist per file type. -->
-<!-- If a row says [TO BE CONFIGURED], fall back to Primary for that file type. -->
 
 | File Extension / Type | Specialist to Spawn |
 |-----------------------|---------------------|

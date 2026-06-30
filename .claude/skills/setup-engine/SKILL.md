@@ -13,7 +13,7 @@ When this skill is invoked:
 
 Four modes:
 
-- **Full spec**: `/setup-engine godot 4.6` — engine and version provided
+- **Full spec**: `/setup-engine godot 4.6` or `/setup-engine cocos 3.8.8` — engine and version provided
 - **Engine only**: `/setup-engine unity` — engine provided, version will be looked up
 - **No args**: `/setup-engine` — fully guided mode (engine recommendation + version)
 - **Refresh**: `/setup-engine refresh` — update reference docs (see Section 10)
@@ -37,7 +37,7 @@ If no engine is specified, run an interactive engine selection process:
 
 **Question 1 — Prior experience** (ask this first, always, via `AskUserQuestion`):
 - Prompt: "Have you worked in any of these engines before?"
-- Options: `Godot` / `Unity` / `Unreal Engine 5` / `Multiple — I'll explain` / `None of them`
+- Options: `Godot` / `Unity` / `Unreal Engine 5` / `Cocos Creator` / `Multiple — I'll explain` / `None of them`
 - If they pick a specific engine → recommend that engine. Prior experience outweighs all other factors. Confirm with them and skip the matrix.
 - If "None" or "Multiple" → continue to the questions below.
 
@@ -47,16 +47,16 @@ If no engine is specified, run an interactive engine selection process:
 - Prompt: "What platforms are you targeting for this game?"
 - Options: `PC (Steam / Epic)` / `Mobile (iOS / Android)` / `Console` / `Web / Browser` / `Multiple platforms`
 - Platform rules that feed directly into the recommendation:
-  - Mobile → Unity strongly preferred; Unreal is a poor fit; Godot is viable for simple mobile
-  - Console → Unity or Unreal; Godot console support requires third-party publishers or significant extra work
-  - Web → Godot exports cleanly to web; Unity WebGL is functional; Unreal has poor web support
+  - Mobile → Unity or Cocos Creator strongly preferred; Unreal is a poor fit; Godot is viable for simple mobile
+  - Console → Unity or Unreal; Godot/Cocos console support requires extra work or is limited
+  - Web → Godot exports cleanly to web; Cocos Creator has strong Web and mini-game export; Unity WebGL is functional; Unreal has poor web support
   - PC only → all engines viable; other factors decide
   - Multiple → Unity is the most portable across PC/mobile/console
 
 1. **What kind of game?** (2D, 3D, or both?)
 2. **Primary input method?** (keyboard/mouse, gamepad, touch, or mixed?)
 3. **Team size and experience?** (solo beginner, solo experienced, small team?)
-4. **Any strong language preferences?** (GDScript, C#, C++, visual scripting?)
+4. **Any strong language preferences?** (GDScript, C#, TypeScript, C++, visual scripting?)
 5. **Budget for engine licensing?** (free only, or commercial licenses OK?)
 
 ### Produce a recommendation
@@ -83,12 +83,19 @@ Do NOT use a simple scoring matrix that eliminates engines. Instead, reason thro
 - Licensing reality: 5% royalty only applies AFTER $1M gross revenue per title. For a first game or any game that doesn't reach $1M, it costs nothing. This threshold is high enough that most indie developers will never pay it.
 - Best fit: AAA-quality 3D; large open-world games; photorealistic visuals; developers with C++ experience or willing to use Blueprint; games targeting high-end PC/console where visual fidelity is a core selling point
 
+**Cocos Creator 3.x**
+- Genuine strengths: Excellent 2D and casual/ mid-core mobile; strong Web and mini-game (WeChat, etc.) export; TypeScript-first workflow familiar to web developers; lightweight runtime; mature China/Asia mobile ecosystem and tooling; free editor with reasonable licensing for most indies
+- Real limitations: Smaller Western tutorial/community compared to Unity; 3D high-fidelity pipeline thinner than Unreal; console support limited; COCOS 4 open-source transition (2026) may shift docs/tooling — verify editor version vs engine branding; fewer AAA reference titles globally
+- Licensing reality: Cocos Creator is free for most indie use; COCOS 4 engine is MIT — confirm current terms for your revenue tier and platform targets
+- Best fit: 2D mobile games; hyper-casual and mid-core mobile; Web and mini-game platforms; teams with TypeScript/JavaScript background; projects targeting Asian mobile markets
+
 **Genre-specific guidance** (factor this into the recommendation):
 - 2D any style → Godot strongly preferred
 - 3D stylized / atmospheric / contained world → Godot viable, Unity solid alternative
 - 3D open world (large, seamless) → Unity or Unreal; Godot is not production-proven for this
 - 3D photorealistic / AAA-quality → Unreal
-- Mobile-first → Unity strongly preferred
+- Mobile-first → Unity or Cocos Creator strongly preferred
+- Web / mini-game-first → Cocos Creator or Godot
 - Console-first → Unity or Unreal; Godot console support requires extra work
 - Horror / narrative / walking sim → any engine; match to art style and team experience
 - Action RPG / Soulslike → Unity or Unreal for 3D; community support and assets matter here
@@ -141,6 +148,19 @@ If Godot was chosen, ask the user which language to use **before** showing the p
 
 Record the choice. It determines the CLAUDE.md template, naming conventions, specialist routing, and which agent is spawned for code files throughout the project.
 
+### Language Selection (Cocos Creator only)
+
+If Cocos Creator was chosen, ask the user which script language to use **before** showing the proposed Technology Stack:
+
+> "Cocos Creator 3.x supports:
+>
+>   **A) TypeScript** — Recommended default. Strong typing, best editor integration, matches official templates and community examples.
+>   **B) JavaScript** — Same engine APIs without static types. Faster to prototype; harder to maintain at scale.
+>
+> Which will this project primarily use?"
+
+Record the choice for naming conventions and specialist routing (both use `cocos-typescript-specialist` for code review — it covers JavaScript idioms when TypeScript is not selected).
+
 ---
 
 Read `CLAUDE.md` and show the user the proposed Technology Stack changes.
@@ -151,6 +171,16 @@ Wait for confirmation before making any edits.
 Update the Technology Stack section, replacing the `[CHOOSE]` placeholders with the actual values:
 
 **For Godot** — use the template matching the language chosen above. See **Appendix A** at the bottom of this skill for all three variants (GDScript, C#, Both).
+
+**For Cocos Creator:**
+```markdown
+- **Engine**: Cocos Creator [version]
+- **Language**: TypeScript (primary)
+- **Build System**: Cocos Creator Build Panel + platform SDKs (Android Studio, Xcode)
+- **Asset Pipeline**: Cocos Asset Manager + Asset Bundles
+```
+
+Use **Appendix B** for TypeScript vs JavaScript naming and routing variants.
 
 **For Unity:**
 ```markdown
@@ -181,6 +211,8 @@ engine-appropriate defaults. Read the existing template first, then fill in:
 ### Naming Conventions (engine defaults)
 
 **For Godot** — see **Appendix A** for GDScript, C#, and Both variants.
+
+**For Cocos Creator** — see **Appendix B** for TypeScript and JavaScript variants.
 
 **For Unity (C#):**
 - Classes: PascalCase (e.g., `PlayerController`)
@@ -235,7 +267,7 @@ Example filled section:
   - Prompt: "Should I set default performance budgets now, or leave them for later?"
   - Options: `[A] Set defaults now (60fps, 16.6ms frame budget, engine-appropriate draw call limit)` / `[B] Leave as [TO BE CONFIGURED] — I'll set these when I know my target hardware`
   - If [A]: populate with the suggested defaults. If [B]: leave as placeholder.
-- **Testing**: Suggest engine-appropriate framework (GUT for Godot, NUnit for Unity, etc.) — ask before adding.
+- **Testing**: Suggest engine-appropriate framework (GUT/GdUnit4 for Godot, Jest for Cocos pure-logic tests, NUnit for Unity, etc.) — ask before adding.
 - **Forbidden Patterns**: Leave as placeholder — do NOT pre-populate.
 - **Allowed Libraries**: Leave as placeholder — do NOT pre-populate dependencies the project does not currently need. Only add a library here when it is actively being integrated, not speculatively.
 
@@ -246,6 +278,8 @@ Example filled section:
 Also populate the `## Engine Specialists` section in `technical-preferences.md` with the correct routing for the chosen engine:
 
 **For Godot** — see **Appendix A** for the routing table matching the language chosen.
+
+**For Cocos Creator** — see **Appendix B** for the routing table matching the language chosen.
 
 **For Unity:**
 ```markdown
@@ -294,7 +328,7 @@ Also populate the `## Engine Specialists` section in `technical-preferences.md` 
 
 ### Collaborative Step
 Present the filled-in preferences to the user. For Godot, include the chosen language and note where the full naming conventions and routing tables live:
-> "Here are the default technical preferences for [engine] ([language if Godot]). The naming conventions and specialist routing are in Appendix A of this skill — I'll apply the [GDScript/C#/Both] variant. Want to customize any of these, or shall I save the defaults?"
+> "Here are the default technical preferences for [engine] ([language if Godot/Cocos]). The naming conventions and specialist routing are in Appendix [A|B] of this skill — I'll apply the [GDScript/C#/Both|TypeScript/JavaScript] variant. Want to customize any of these, or shall I save the defaults?"
 
 For all other engines, present the defaults directly without referencing the appendix.
 
@@ -311,6 +345,7 @@ Check whether the engine version is likely beyond the LLM's training data.
 - Godot: training data likely covers up to ~4.3
 - Unity: training data likely covers up to ~2023.x / early 6000.x
 - Unreal: training data likely covers up to ~5.3 / early 5.4
+- Cocos Creator: training data likely covers 3.6–3.8 broadly; 3.8.6+ patches and COCOS 4 branding may be incomplete
 
 Compare the user's chosen version against these baselines:
 
@@ -714,3 +749,88 @@ Use GDScript conventions for `.gd` files and C# conventions for `.cs` files. Mix
 | Native extension / plugin files (.gdextension, C++) | godot-gdextension-specialist |
 | General architecture review | godot-specialist |
 ```
+
+---
+
+## Appendix B — Cocos Creator Language Configuration
+
+All Cocos Creator-specific variants for language-dependent configuration. Referenced from Sections 4 and 5 — only relevant when Cocos Creator is the chosen engine.
+
+---
+
+### B1. CLAUDE.md Technology Stack Templates
+
+**TypeScript:**
+```markdown
+- **Engine**: Cocos Creator [version]
+- **Language**: TypeScript
+- **Build System**: Cocos Creator Build Panel + platform SDKs
+- **Asset Pipeline**: Cocos Asset Manager + Asset Bundles
+```
+
+**JavaScript:**
+```markdown
+- **Engine**: Cocos Creator [version]
+- **Language**: JavaScript
+- **Build System**: Cocos Creator Build Panel + platform SDKs
+- **Asset Pipeline**: Cocos Asset Manager + Asset Bundles
+```
+
+---
+
+### B2. Naming Conventions
+
+**TypeScript and JavaScript (shared):**
+- Classes: PascalCase (`PlayerController`)
+- Methods: camelCase (`takeDamage()`)
+- Public properties: camelCase (`moveSpeed`)
+- Private fields: `_camelCase` or `private camelCase`
+- Files: PascalCase matching class (`PlayerController.ts` or `.js`)
+- Prefabs/scenes: PascalCase (`PlayerController.prefab`, `MainMenu.scene`)
+- Constants: `UPPER_SNAKE_CASE` or `static readonly`
+- Event names: kebab-case strings (`'health-changed'`)
+
+---
+
+### B3. Engine Specialists Routing
+
+**TypeScript or JavaScript:**
+```markdown
+## Engine Specialists
+- **Primary**: cocos-specialist
+- **Language/Code Specialist**: cocos-typescript-specialist (all .ts and .js component scripts)
+- **Shader Specialist**: cocos-shader-specialist (.effect files, materials, particles)
+- **UI Specialist**: cocos-specialist (Canvas, Widget, UI components — primary covers UI)
+- **Additional Specialists**: cocos-native-specialist (JSB, Android/iOS native SDK bridges)
+- **Routing Notes**: Invoke primary for architecture, bundles, and scene/prefab design. Invoke TypeScript specialist for component code quality and lifecycle patterns. Invoke shader specialist for Effect shaders and materials. Invoke native specialist only for JSB and platform SDK work.
+
+### File Extension Routing
+
+| File Extension / Type | Specialist to Spawn |
+|-----------------------|---------------------|
+| Component scripts (.ts, .js) | cocos-typescript-specialist |
+| Shader / Effect files (.effect) | cocos-shader-specialist |
+| UI prefabs and screens (.prefab with UI root) | cocos-specialist |
+| Scene files (.scene) | cocos-specialist |
+| Native plugin / JSB (Java, ObjC++, C++) | cocos-native-specialist |
+| General architecture review | cocos-specialist |
+```
+
+---
+
+### B4. Project Directory Convention
+
+Default Cocos Creator layout (document in `technical-preferences.md` if used):
+
+```
+assets/
+├── scripts/       # Component TypeScript/JavaScript
+├── scenes/        # .scene files
+├── prefabs/       # .prefab files
+├── effects/       # .effect shader files
+├── config/        # JSON gameplay data
+└── bundles/       # Asset bundle roots
+```
+
+Rules in `.claude/rules/cocos-component-code.md` apply to `assets/scripts/**`.
+CCGS `src/` layout is also supported via `src/cocos/**` when adopting brownfield structure.

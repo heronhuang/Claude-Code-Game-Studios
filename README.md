@@ -3,16 +3,16 @@
   <p align="center">
     Turn a single Claude Code session into a full game development studio.
     <br />
-    49 agents. 73 skills. One coordinated AI team.
+    53 agents. 73 skills. One coordinated AI team.
   </p>
 </p>
 
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License"></a>
-  <a href=".claude/agents"><img src="https://img.shields.io/badge/agents-49-blueviolet" alt="49 Agents"></a>
+  <a href=".claude/agents"><img src="https://img.shields.io/badge/agents-53-blueviolet" alt="53 Agents"></a>
   <a href=".claude/skills"><img src="https://img.shields.io/badge/skills-73-green" alt="73 Skills"></a>
   <a href=".claude/hooks"><img src="https://img.shields.io/badge/hooks-12-orange" alt="12 Hooks"></a>
-  <a href=".claude/rules"><img src="https://img.shields.io/badge/rules-11-red" alt="11 Rules"></a>
+  <a href=".claude/rules"><img src="https://img.shields.io/badge/rules-12-red" alt="12 Rules"></a>
   <a href="https://docs.anthropic.com/en/docs/claude-code"><img src="https://img.shields.io/badge/built%20for-Claude%20Code-f5f5f5?logo=anthropic" alt="Built for Claude Code"></a>
   <a href="https://www.buymeacoffee.com/donchitos3"><img src="https://img.shields.io/badge/Buy%20Me%20a%20Coffee-Support%20this%20project-FFDD00?logo=buymeacoffee&logoColor=black" alt="Buy Me a Coffee"></a>
   <a href="https://github.com/sponsors/Donchitos"><img src="https://img.shields.io/badge/GitHub%20Sponsors-Support%20this%20project-ea4aaa?logo=githubsponsors&logoColor=white" alt="GitHub Sponsors"></a>
@@ -84,11 +84,12 @@ Tier 3 — Specialists (Sonnet/Haiku)
 
 ### Engine Specialists
 
-The template includes agent sets for all three major engines. Use the set that matches your project:
+The template includes agent sets for all major engines. Use the set that matches your project:
 
 | Engine | Lead Agent | Sub-Specialists |
 |--------|-----------|-----------------|
 | **Godot 4** | `godot-specialist` | GDScript, Shaders, GDExtension |
+| **Cocos Creator 3.x** | `cocos-specialist` | TypeScript, Shaders (Effect), Native (JSB) |
 | **Unity** | `unity-specialist` | DOTS/ECS, Shaders/VFX, Addressables, UI Toolkit |
 | **Unreal Engine 5** | `unreal-specialist` | GAS, Blueprints, Replication, UMG/CommonUI |
 
@@ -274,7 +275,7 @@ This is a **template**, not a locked framework. Everything is meant to be custom
 - **Modify skills** — adjust workflows to match your team's process
 - **Add rules** — create new path-scoped rules for your project's directory structure
 - **Tune hooks** — adjust validation strictness, add new checks
-- **Pick your engine** — use the Godot, Unity, or Unreal agent set (or none)
+- **Pick your engine** — use the Godot, Cocos Creator, Unity, or Unreal agent set (or none)
 - **Set review intensity** — `full` (all director gates), `lean` (phase gates only), or `solo` (none). Set during `/start` or edit `production/review-mode.txt`. Override per-run with `--review solo` on any skill.
 
 ## Platform Support

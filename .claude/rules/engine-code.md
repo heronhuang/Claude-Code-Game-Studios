@@ -17,7 +17,7 @@ paths:
 
 ## Examples
 
-**Correct** (zero-alloc hot path):
+**Correct** (zero-alloc hot path — Godot):
 
 ```gdscript
 # Pre-allocated array reused each frame
@@ -28,10 +28,28 @@ func _physics_process(delta: float) -> void:
     _spatial_grid.query_radius(position, radius, _nearby_cache)
 ```
 
+**Correct** (zero-alloc hot path — Cocos Creator / TypeScript):
+
+```typescript
+private readonly _nearbyCache: Node[] = [];
+
+update(): void {
+  this._nearbyCache.length = 0;
+  this._spatialGrid.queryRadius(this.node.worldPosition, this.radius, this._nearbyCache);
+}
+```
+
 **Incorrect** (allocating in hot path):
 
 ```gdscript
 func _physics_process(delta: float) -> void:
     var nearby: Array[Node3D] = []  # VIOLATION: allocates every frame
     nearby = get_tree().get_nodes_in_group("enemies")  # VIOLATION: tree query every frame
+```
+
+```typescript
+update(): void {
+  const nearby: Node[] = [];  // VIOLATION: allocates every frame
+  this.node.scene.getComponentsInChildren(Enemy);  // VIOLATION: full scene query every frame
+}
 ```

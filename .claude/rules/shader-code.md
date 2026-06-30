@@ -11,6 +11,7 @@ visual quality, performance, and cross-platform compatibility.
 ## Naming Conventions
 - File naming: `[type]_[category]_[name].[ext]`
   - `spatial_env_water.gdshader` (Godot)
+  - `env-water.effect` (Cocos Creator)
   - `SG_Env_Water` (Unity Shader Graph)
   - `M_Env_Water` (Unreal Material)
 - Use descriptive names that indicate the material purpose
@@ -18,7 +19,7 @@ visual quality, performance, and cross-platform compatibility.
 
 ## Code Quality
 - All uniforms/parameters must have descriptive names and appropriate hints
-- Group related parameters (Godot: `group_uniforms`, Unity: `[Header]`, Unreal: Category)
+- Group related parameters (Godot: `group_uniforms`, Cocos: `properties` block in `.effect`, Unity: `[Header]`, Unreal: Category)
 - Comment non-obvious calculations (especially math-heavy sections)
 - No magic numbers — use named constants or documented uniform values
 - Include authorship and purpose comment at the top of each shader file

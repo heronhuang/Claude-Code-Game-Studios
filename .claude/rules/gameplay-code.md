@@ -16,11 +16,18 @@ paths:
 
 ## Examples
 
-**Correct** (data-driven):
+**Correct** (data-driven — Godot):
 
 ```gdscript
 var damage: float = config.get_value("combat", "base_damage", 10.0)
 var speed: float = stats_resource.movement_speed * delta
+```
+
+**Correct** (data-driven — Cocos Creator / TypeScript):
+
+```typescript
+const baseDamage = this.combatConfig?.json?.baseDamage ?? 10;
+const speed = this.stats.moveSpeed * deltaTime;
 ```
 
 **Incorrect** (hardcoded):
@@ -28,4 +35,9 @@ var speed: float = stats_resource.movement_speed * delta
 ```gdscript
 var damage: float = 25.0   # VIOLATION: hardcoded gameplay value
 var speed: float = 5.0      # VIOLATION: not from config, not using delta
+```
+
+```typescript
+const damage = 25;          // VIOLATION: hardcoded gameplay value
+const speed = 5;            // VIOLATION: not from config, not using deltaTime
 ```

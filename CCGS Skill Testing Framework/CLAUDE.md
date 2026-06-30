@@ -7,7 +7,7 @@ framework. It is self-contained and separate from any game project.
 
 | File | Purpose |
 |------|---------|
-| `catalog.yaml` | Master registry for all 73 skills and 49 agents. Contains category, spec path, and last-test tracking fields. Always read this first when running any test command. |
+| `catalog.yaml` | Master registry for all 73 skills and 53 agents. Contains category, spec path, and last-test tracking fields. Always read this first when running any test command. |
 | `quality-rubric.md` | Category-specific pass/fail metrics. Read the matching `###` section for the skill's category when running `/skill-test category`. |
 | `skills/[category]/[name].md` | Behavioral spec for a skill — 5 test cases + protocol compliance assertions. |
 | `agents/[tier]/[name].md` | Behavioral spec for an agent — 5 test cases + protocol compliance assertions. |
@@ -56,6 +56,8 @@ specialists → gameplay-programmer, engine-programmer, ui-programmer,
               level-designer, sound-designer, technical-artist
 godot       → godot-specialist, godot-gdscript-specialist, godot-csharp-specialist,
               godot-shader-specialist, godot-gdextension-specialist
+cocos       → cocos-specialist, cocos-typescript-specialist, cocos-shader-specialist,
+              cocos-native-specialist
 unity       → unity-specialist, unity-ui-specialist, unity-shader-specialist,
               unity-dots-specialist, unity-addressables-specialist
 unreal      → unreal-specialist, ue-gas-specialist, ue-replication-specialist,

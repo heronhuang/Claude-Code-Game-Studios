@@ -5,7 +5,7 @@ When writing or editing game code in this directory, follow these standards.
 ## Engine Version Warning
 
 The LLM's training data predates the pinned engine version.
-**Always check `docs/engine-reference/` before using any engine API.**
+**Always check `docs/engine-reference/` and use the engine configured in `CLAUDE.md` before using any engine API.**
 Do not guess at post-cutoff API signatures — look them up first.
 
 ## Coding Standards

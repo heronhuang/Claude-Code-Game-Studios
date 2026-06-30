@@ -40,3 +40,20 @@ func test1() -> void:  # VIOLATION: no descriptive name
     h.take_damage(25)  # VIOLATION: no arrange step, no clear assert
     assert_true(h.current_health < 100)  # VIOLATION: imprecise assertion
 ```
+
+**Correct** (Cocos Creator / TypeScript — pure logic unit test):
+
+```typescript
+test('healthModel_takeDamage_reducesHealth', () => {
+  // Arrange
+  const health = new HealthModel(100);
+  health.maxHealth = 100;
+  health.currentHealth = 100;
+
+  // Act
+  health.takeDamage(25);
+
+  // Assert
+  expect(health.currentHealth).toBe(75);
+});
+```

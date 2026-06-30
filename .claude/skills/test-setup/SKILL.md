@@ -33,8 +33,9 @@ A test framework installed at sprint four costs 3 sprints.
    - Glob `tests/` — does the directory exist?
    - Glob `tests/unit/` and `tests/integration/` — do subdirectories exist?
    - Glob `.github/workflows/` — does a CI workflow file exist?
-   - Glob `tests/gdunit4_runner.gd` (Godot) or `tests/EditMode/` (Unity) or
-     `Source/Tests/` (Unreal) for engine-specific artifacts.
+   - Glob `tests/gdunit4_runner.gd` (Godot) or `tests/jest.config.js` (Cocos)
+     or `tests/EditMode/` (Unity) or `Source/Tests/` (Unreal) for
+     engine-specific artifacts.
 
 3. **Report findings**:
    - "Engine: [engine]. Test directory: [found / not found]. CI workflow: [found / not found]."
@@ -164,6 +165,86 @@ Note in the README: **Installing GdUnit4**
 3. Restart the editor
 4. Verify: res://addons/gdunit4/ exists
 ```
+
+#### Cocos Creator (`Engine: Cocos Creator`)
+
+Create `tests/unit/README.md`:
+
+```markdown
+# Unit Tests (Cocos Creator)
+
+Pure gameplay logic tests run with Jest (or Vitest) outside the Cocos editor.
+Extract formulas and state machines from components into testable modules under
+`assets/scripts/` or `src/cocos/`.
+
+Component integration tests require the Cocos editor test environment — document
+manual smoke steps in story files until automated editor tests are configured.
+```
+
+Create `tests/jest.config.js` (or note in README to run `/test-setup` when Jest is approved):
+
+```javascript
+/** @type {import('jest').Config} */
+module.exports = {
+  testMatch: ['**/tests/unit/**/*.test.ts'],
+  preset: 'ts-jest',
+  testEnvironment: 'node',
+};
+```
+
+Note in README: **Cocos testing strategy**
+```
+1. Pure logic → Jest/Vitest in tests/unit/ (no engine runtime)
+2. Component behavior → manual smoke in editor + /smoke-check
+3. Native JSB → device builds only; mock jsb in unit tests
+4. Run locally → npx jest --config tests/jest.config.js --runInBand
+```
+
+### Cocos Creator
+
+Create `.github/workflows/tests.yml`:
+
+```yaml
+name: Automated Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: Run Cocos Logic Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Jest unit tests
+        run: npx jest --config tests/jest.config.js --runInBand
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: tests/evidence/
+```
+
+Note: Cocos editor integration tests are still manual unless the project adds
+an engine-specific automation harness. This workflow validates extracted
+TypeScript logic only.
 
 #### Unity (`Engine: Unity`)
 
